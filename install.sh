@@ -1,22 +1,23 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-ROOT_UID=0
-DEST_DIR=
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SOURCE_DIR="$SCRIPT_DIR/Radioactive"
 
-# Destination directory
-if [ "$UID" -eq "$ROOT_UID" ]; then
+if [[ ! -f "$SOURCE_DIR/index.theme" || ! -d "$SOURCE_DIR/cursors" ]]; then
+  printf 'Radioactive theme files are missing beside this installer.\n' >&2
+  exit 1
+fi
+
+if (( EUID == 0 )); then
   DEST_DIR="/usr/share/icons"
 else
-  DEST_DIR="$HOME/.icons/"
-  mkdir -p $DEST_DIR
+  DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+  DEST_DIR="$DATA_HOME/icons"
 fi
 
-# Remove folder if existing
-if [ -d "$DEST_DIR/Radioactive" ]; then
-  rm -rf "$DEST_DIR/Radioactive"
-fi
+THEME_DIR="$DEST_DIR/Radioactive"
+mkdir -p -- "$THEME_DIR"
+cp -R -- "$SOURCE_DIR/." "$THEME_DIR/"
 
-cp -r Radioactive/ $DEST_DIR/Radioactive
-
-echo "Finished..."
-
+printf 'Installed Radioactive to %s\n' "$THEME_DIR"

@@ -1,2 +1,4 @@
 [Icon Theme]
-Name="Radioactive"
+Name=Radioactive
+Comment=Radioactive cursor theme
+Inherits=Adwaita

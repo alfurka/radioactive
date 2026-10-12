@@ -18,13 +18,15 @@ The scalable cursors on a dark and a light background:
 
 ![Radioactive SVG cursors](./art/preview-svg.png)
 
-### Busy cursors
+### Busy cursor
 
-The `progress` cursor (arrow with a small spinning radioactive symbol) and the
-`wait` cursor (the big spinning radioactive symbol) are the original animations,
-traced frame by frame.
+While an application is starting, the normal arrow stays and a small radioactive
+symbol spins next to it, like the busy cursor in Windows. GNOME 51 asks for the
+`wait` cursor in this situation, so in the SVG set both `wait` and `progress`
+use this animation. (The classic Xcursor files keep their original big spinning
+symbol for `wait`.)
 
-![Busy cursors: progress and wait](./art/busy-cursors.gif)
+![Busy cursor](./art/busy-cursors.gif)
 
 The original bitmap cursors are shown in [art/preview.png](./art/preview.png).
 

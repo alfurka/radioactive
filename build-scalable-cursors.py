@@ -10,6 +10,11 @@ source of truth for names, hotspots and timing.
 Animated cursors (``progress``, ``wait``) are traced frame by frame, so the
 SVGs animate exactly like the originals.
 
+GNOME shows ``wait`` (not ``progress``) while an application is starting, so in
+the SVG set ``wait`` is an alias of ``progress``: the arrow stays and a small
+radioactive symbol spins beside it. Set WAIT_USES_PROGRESS = False to keep the
+original big spinning disc for ``wait``.
+
 Requires: Pillow, numpy and the ``potrace`` command line tool.
 """
 
@@ -19,6 +24,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import struct
 import subprocess
 import tempfile
@@ -36,6 +42,7 @@ NOMINAL_SIZE = 24  # hotspots in the metadata are given at this size
 CANVAS = TRACE_SIZE  # SVG user units; 96 units == NOMINAL_SIZE pixels
 
 
+WAIT_USES_PROGRESS = True
 DEFAULT_DELAY = 60  # ms, used when an animated Xcursor frame has no delay
 
 SHADOW = (
@@ -340,9 +347,19 @@ def main() -> None:
     )
     for cursor_path in canonical:
         name = cursor_path.name
+        if name == "wait" and WAIT_USES_PROGRESS:
+            continue
         hot = hotspot(small_image(read_xcursor_images(cursor_path)))
         frames, delays = trace_cursor(cursor_path)
         write_cursor(output_root / name, name, frames, hot, delays)
+
+    if WAIT_USES_PROGRESS:
+        wait_path = output_root / "wait"
+        if wait_path.is_symlink():
+            wait_path.unlink()
+        elif wait_path.is_dir():
+            shutil.rmtree(wait_path)
+        os.symlink("progress", wait_path)
 
     for cursor_path in sorted(source_cursors.iterdir()):
         if not cursor_path.is_symlink():

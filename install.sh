@@ -17,6 +17,8 @@ else
 fi
 
 THEME_DIR="$DEST_DIR/Radioactive"
+# Replace any previous install so no stale files from older versions remain.
+rm -rf -- "$THEME_DIR"
 mkdir -p -- "$THEME_DIR"
 cp -R -- "$SOURCE_DIR/." "$THEME_DIR/"
 

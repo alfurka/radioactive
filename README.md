@@ -30,31 +30,23 @@ The original bitmap cursors are shown in [art/preview.png](./art/preview.png).
 
 ## Installation
 
-The installer detects whether it is run as a regular user or as root. For a
-user-only installation, run:
+Clone the repository and run the installer:
 
 ```sh
+git clone https://github.com/alfurka/radioactive.git
+cd radioactive
 ./install.sh
 ```
 
-For a system-wide installation, run:
-
-```sh
-sudo ./install.sh
-```
-
-The package includes the classic Xcursor files and native vector artwork in
-`cursors_scalable` for GNOME 51 and other desktops that load SVG cursor themes.
-The SVGs are traced from the original 96px cursor artwork, so they look like the
-originals at any size or display density, and they keep the Xcursor hotspots.
-
-To rebuild the SVG cursors, run `python3 build-scalable-cursors.py` from the
-repository root. It needs Pillow, NumPy and the `potrace` command line tool.
+Run it as a regular user to install for yourself only
+(`~/.local/share/icons/Radioactive`), or with `sudo ./install.sh` to install for
+all users (`/usr/share/icons/Radioactive`). Any previous install of the theme is
+replaced.
 
 ### Archive installation
 
-The archive contains a top-level `Radioactive/` directory. For a user-only
-installation, extract it into the local icon directory:
+Alternatively, extract the archive. It contains a top-level `Radioactive/`
+directory.
 
 ```sh
 mkdir -p "$HOME/.local/share/icons"
@@ -62,18 +54,17 @@ tar -xzf archives/Radioactive.tar.gz -C "$HOME/.local/share/icons"
 ```
 
 For a system-wide installation, use `/usr/share/icons` as the destination.
+If you are updating, delete the old `Radioactive` directory first.
 
-After installing, select **Radioactive** in GNOME Tweaks or run:
+### Select the theme
+
+Select **Radioactive** in GNOME Tweaks (or your desktop's settings), or run:
 
 ```sh
 gsettings set org.gnome.desktop.interface cursor-theme 'Radioactive'
 ```
 
 If the cursor does not update immediately, log out and back in.
-
-## Also available on Pling
-
-[Radioactive on Pling](https://www.pling.com/p/1579027/)
 
 ## Uninstallation
 
@@ -84,12 +75,42 @@ rm -r "$HOME/.local/share/icons/Radioactive"
 ```
 
 For a system-wide installation, remove `/usr/share/icons/Radioactive` with
-administrator privileges.
+administrator privileges (`sudo rm -r /usr/share/icons/Radioactive`).
 
-## From the same author
+## What is in the package
 
-- [Nordzy icon theme](https://github.com/alvatip/Nordzy-icon)
-- [Nordzy-cursors](https://github.com/alvatip/Nordzy-cursors)
+- `Radioactive/cursors` - the original Xcursor files (X11 and older desktops).
+- `Radioactive/cursors_scalable` - the SVG cursors for GNOME 51 and other
+  desktops that load SVG cursor themes. Each cursor is a folder with its SVG
+  frame(s) and a `metadata.json` holding the hotspot and animation timing.
+
+The SVGs are traced from the original 96px cursor artwork, so they look like the
+originals at any size or display density, and they keep the original hotspots.
+
+### Rebuilding the SVG cursors
+
+```sh
+python3 build-scalable-cursors.py
+```
+
+Run it from the repository root. It needs Python 3, Pillow, NumPy and the
+`potrace` command line tool, and it regenerates `Radioactive/cursors_scalable`
+from `Radioactive/cursors`.
+
+## Issues
+
+Problems with the SVG cursors or the installer: please open an issue
+[here](https://github.com/alfurka/radioactive/issues).
+
+## Credits
+
+- Cursor design: [alvatip](https://github.com/alvatip), original project at
+  [alvatip/radioactive](https://github.com/alvatip/radioactive) (also on
+  [Pling](https://www.pling.com/p/1579027/)).
+- SVG conversion for GNOME 51: [alfurka](https://github.com/alfurka).
+- More from the original author:
+  [Nordzy icon theme](https://github.com/alvatip/Nordzy-icon) and
+  [Nordzy-cursors](https://github.com/alvatip/Nordzy-cursors).
 
 ## Licence
 
